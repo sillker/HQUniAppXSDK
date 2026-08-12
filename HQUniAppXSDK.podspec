@@ -5,21 +5,21 @@ Pod::Spec.new do |s|
   s.homepage = 'https://www.hqwx.com'
   s.license = { :type => 'Proprietary', :text => 'Copyright edu24ol.' }
   s.author = { 'HQWX' => 'ios@hqwx.com' }
-  s.source = { :path => '.' }
-  s.platform = :ios, '12.0'
+  s.source = { :git => 'https://github.com/sillker/HQUniAppXSDK.git', :tag => s.version.to_s }
+  s.platform = :ios, '13.0'
 
   s.source_files = 'Sources/**/*.{h,m,mm,swift}'
   s.resources = [
     'Resources/uni-app-x',
     'Resources/DCloud/**/*'
   ]
-	  vendored_frameworks = (Dir['Frameworks/*.xcframework'] + Dir['Frameworks/*.framework']).reject do |framework|
-	    File.basename(framework) == 'SDWebImage.xcframework'
-	  end
-	  s.vendored_frameworks = vendored_frameworks unless vendored_frameworks.empty?
-	  s.dependency 'SDWebImage', '~> 5.7.3'
-	
-	  s.frameworks = [
+
+  vendored_frameworks = (Dir['Frameworks/*.xcframework'] + Dir['Frameworks/*.framework']).reject do |framework|
+    File.basename(framework) == 'SDWebImage.xcframework'
+  end
+  s.vendored_frameworks = vendored_frameworks unless vendored_frameworks.empty?
+
+  s.frameworks = [
     'JavaScriptCore',
     'Photos',
     'PhotosUI',
