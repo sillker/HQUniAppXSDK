@@ -1,0 +1,6 @@
+framework module DCloudPermissionCamera {
+  umbrella header "DCloudPermissionCamera.h"
+  export *
+
+  module * { export * }
+}

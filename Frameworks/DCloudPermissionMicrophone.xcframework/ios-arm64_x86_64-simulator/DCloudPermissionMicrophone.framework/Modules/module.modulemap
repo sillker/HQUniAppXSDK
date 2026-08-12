@@ -1,0 +1,6 @@
+framework module DCloudPermissionMicrophone {
+  umbrella header "DCloudPermissionMicrophone.h"
+  export *
+
+  module * { export * }
+}

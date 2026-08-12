@@ -1,0 +1,6 @@
+framework module DCloudDebugServe {
+  umbrella header "DCloudDebugServe.h"
+  export *
+
+  module * { export * }
+}

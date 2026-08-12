@@ -1,0 +1,10 @@
+{
+  "components": [
+    {
+      "type": "customElement",
+      "name": "rich-text",
+      "class": "UTSSDKModulesDCloudUniRichTextUniRichTextElement",
+      "delegateClass": "UniRichTextElementRegister"
+    }
+  ]
+}

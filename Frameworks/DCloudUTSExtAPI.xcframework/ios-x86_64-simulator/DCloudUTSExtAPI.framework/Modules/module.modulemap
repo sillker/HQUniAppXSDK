@@ -1,0 +1,4 @@
+framework module DCloudUTSExtAPI {
+  header "DCloudUTSExtAPI-Swift.h"
+  requires objc
+}

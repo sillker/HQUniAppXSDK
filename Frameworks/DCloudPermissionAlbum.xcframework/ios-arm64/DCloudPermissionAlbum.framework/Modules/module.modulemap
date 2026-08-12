@@ -1,0 +1,6 @@
+framework module DCloudPermissionAlbum {
+  umbrella header "DCloudPermissionAlbum.h"
+  export *
+
+  module * { export * }
+}

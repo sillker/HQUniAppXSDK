@@ -1,0 +1,6 @@
+framework module DCloudPermissionIDFA {
+  umbrella header "DCloudPermissionIDFA.h"
+  export *
+
+  module * { export * }
+}
