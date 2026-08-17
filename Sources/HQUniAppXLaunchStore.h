@@ -16,6 +16,7 @@ NS_ASSUME_NONNULL_BEGIN
 - (void)saveTargetUrl:(NSString *)targetUrl targetParams:(NSDictionary *)targetParams;
 - (NSDictionary *)currentLaunchParams;
 - (void)clear;
+- (BOOL)isAl;
 
 @end
 

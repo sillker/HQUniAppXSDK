@@ -56,6 +56,13 @@ static NSString * const HQUniAppXLaunchParamsDefaultsKey = @"HQUniAppXLaunchPara
     }
 }
 
+- (BOOL)isAl
+{
+    @synchronized (self) {
+        return [[[self targetParams] objectForKey:@"isAl"] boolValue];
+    }
+}
+
 - (NSDictionary *)normalizedDictionary:(NSDictionary *)dictionary
 {
     NSMutableDictionary *result = [NSMutableDictionary dictionaryWithCapacity:dictionary.count];

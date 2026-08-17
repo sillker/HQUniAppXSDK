@@ -17,7 +17,7 @@ NS_ASSUME_NONNULL_BEGIN
 - (NSDictionary *)getLaunchParams;
 - (void)handleAction:(NSString *)action params:(NSDictionary *)params;
 - (void)handlePage:(NSString *)page;
-- (NSInteger)getBuyTypeWithGoodsId:(NSInteger)goodsId;
+//- (NSInteger)getBuyTypeWithGoodsId:(NSInteger)goodsId;
 
 @end
 

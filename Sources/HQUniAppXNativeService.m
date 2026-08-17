@@ -10,16 +10,6 @@
 #import "HQUniAppXLaunchStore.h"
 #import <UIKit/UIKit.h>
 
-static NSInteger const HQUniAppXPatternTypeSeatWorkAnswer = 0;
-static NSInteger const HQUniAppXPatternTypeSeatWorkAnalysis = 2;
-static NSInteger const HQUniAppXSeatWorkClassTypeCSPro = 2;
-static NSInteger const HQUniAppXHomeWorkTypeCSPChapterExerciseGuide = 13;
-static NSInteger const HQUniAppXLCServiceTypeCSPChapterExercise = 207;
-static NSInteger const HQUniAppXLCServiceTypeCSPCustomBrush = 226;
-
-typedef void (^HQUniAppXSeatWorkSuccessBlock)(id seatWork, BOOL inited, BOOL isFinished);
-typedef void (^HQUniAppXFailureBlock)(NSError *error);
-
 @implementation HQUniAppXNativeService
 
 + (instancetype)sharedService
@@ -77,13 +67,16 @@ typedef void (^HQUniAppXFailureBlock)(NSError *error);
     }];
     
     if ([action isEqualToString:@"handleCourseNoteItemClick"]) {
-        [self handleCourseNoteItemClick:safeParams];
+        [self gotoSeatwork:safeParams action:action];
     } else if ([action isEqualToString:@"handleQuestionNoteItemClick"]) {
-        [self handleQuestionNoteItemClick:safeParams];
+        [self gotoSeatwork:safeParams action:action];
     } else if ([action isEqualToString:@"handleChapterExercise"]) {
-        [self handleChapterExercise:safeParams];
+        [self gotoSeatwork:safeParams action:action];
     } else if ([action isEqualToString:@"handleCustomExercise"]) {
-        [self handleCustomExercise:safeParams];
+        [self gotoSeatwork:safeParams action:action];
+    }
+    else {
+        [self showPendingNativeAction:@"暂不支持" params:params];
     }
 }
 
@@ -107,70 +100,43 @@ typedef void (^HQUniAppXFailureBlock)(NSError *error);
     }];
 }
 
-- (NSInteger)getBuyTypeWithGoodsId:(NSInteger)goodsId
-{
-    Class managerClass = NSClassFromString(@"GZXXListBuyGoodsByUidManager");
-    SEL selector = NSSelectorFromString(@"localFromGoodId:withGoodGroupId:");
-    if (managerClass && [managerClass respondsToSelector:selector]) {
-        NSMethodSignature *signature = [managerClass methodSignatureForSelector:selector];
-        NSInvocation *invocation = [NSInvocation invocationWithMethodSignature:signature];
-        invocation.target = managerClass;
-        invocation.selector = selector;
-        NSInteger groupId = 0;
-        [invocation setArgument:&goodsId atIndex:2];
-        [invocation setArgument:&groupId atIndex:3];
-        [invocation invoke];
-        __unsafe_unretained id model = nil;
-        [invocation getReturnValue:&model];
-        if ([model respondsToSelector:NSSelectorFromString(@"buyType")]) {
-            return [[model valueForKey:@"buyType"] integerValue];
-        }
-    }
-    return 0;
-}
+//- (NSInteger)getBuyTypeWithGoodsId:(NSInteger)goodsId
+//{
+//    Class managerClass = NSClassFromString(@"GZXXListBuyGoodsByUidManager");
+//    SEL selector = NSSelectorFromString(@"localFromGoodId:withGoodGroupId:");
+//    if (managerClass && [managerClass respondsToSelector:selector]) {
+//        NSMethodSignature *signature = [managerClass methodSignatureForSelector:selector];
+//        NSInvocation *invocation = [NSInvocation invocationWithMethodSignature:signature];
+//        invocation.target = managerClass;
+//        invocation.selector = selector;
+//        NSInteger groupId = 0;
+//        [invocation setArgument:&goodsId atIndex:2];
+//        [invocation setArgument:&groupId atIndex:3];
+//        [invocation invoke];
+//        __unsafe_unretained id model = nil;
+//        [invocation getReturnValue:&model];
+//        if ([model respondsToSelector:NSSelectorFromString(@"buyType")]) {
+//            return [[model valueForKey:@"buyType"] integerValue];
+//        }
+//    }
+//    return 0;
+//}
 
-- (void)handleCourseNoteItemClick:(NSDictionary *)params
+
+- (void)gotoSeatwork:(NSDictionary *)params action:(NSString *)action
 {
     [self runOnMainThread:^{
-        NSString *route = [self stringValueFromParams:params keys:@[@"routeUrl", @"route", @"page", @"url"]];
-        if (route.length && [self openNativePage:route params:params]) {
+        NSMutableDictionary *dict = @{@"action":action? :@""}.mutableCopy;
+        if (params) {
+            dict[@"actionParams"] = params;
+        }
+        if ([HQUniAppXLaunchStore sharedStore].currentLaunchParams) {
+            dict[@"currentLaunchParams"] = [HQUniAppXLaunchStore sharedStore].currentLaunchParams;
+        }
+        if ([self openNativePage:@"hqwx://GZXXUniappEventTool" params:dict]) {
             return;
         }
-        [self showPendingNativeAction:@"课程笔记跳转待接入：缺少稳定原生播放器路由" params:params];
     }];
-}
-
-- (void)handleQuestionNoteItemClick:(NSDictionary *)params
-{
-    [self openSeatWorkWithParams:params
-                         pattern:HQUniAppXPatternTypeSeatWorkAnalysis
-                      serviceType:HQUniAppXLCServiceTypeCSPChapterExercise
-                            title:@"题目解析"
-                         fromName:@"题目笔记"
-                         isPaper:NO];
-}
-
-- (void)handleChapterExercise:(NSDictionary *)params
-{
-    NSInteger openType = [self integerValueFromParams:params keys:@[@"openType", @"questionOpenType"] defaultValue:1];
-    NSInteger pattern = (openType == 2) ? HQUniAppXPatternTypeSeatWorkAnalysis : HQUniAppXPatternTypeSeatWorkAnswer;
-    NSString *title = (pattern == HQUniAppXPatternTypeSeatWorkAnalysis) ? @"题目解析" : @"章节练习";
-    [self openSeatWorkWithParams:params
-                         pattern:pattern
-                      serviceType:HQUniAppXLCServiceTypeCSPChapterExercise
-                            title:title
-                         fromName:@"章节练习"
-                         isPaper:NO];
-}
-
-- (void)handleCustomExercise:(NSDictionary *)params
-{
-    [self openSeatWorkWithParams:params
-                         pattern:HQUniAppXPatternTypeSeatWorkAnswer
-                      serviceType:HQUniAppXLCServiceTypeCSPCustomBrush
-                            title:@"自定义刷题"
-                         fromName:@"自定义刷题"
-                         isPaper:NO];
 }
 
 - (void)showPendingNativeAction:(NSString *)message params:(NSDictionary *)params
@@ -178,134 +144,6 @@ typedef void (^HQUniAppXFailureBlock)(NSError *error);
 #ifdef DEBUG
     NSLog(@"[HQUniAppXNativeService] %@ params:%@", message, params);
 #endif
-}
-
-- (void)openSeatWorkWithParams:(NSDictionary *)params
-                       pattern:(NSInteger)pattern
-                    serviceType:(NSInteger)serviceType
-                          title:(NSString *)title
-                       fromName:(NSString *)fromName
-                       isPaper:(BOOL)isPaper
-{
-    NSString *qids = [self normalizedQuestionIdsFromParams:params];
-    if (!qids.length) {
-        [self showPendingNativeAction:@"做题跳转失败：questionIds 为空" params:params];
-        return;
-    }
-    
-    Class helperClass = NSClassFromString(@"YSS_HomeworkHelper");
-    SEL selector = NSSelectorFromString(@"csp7_produceNavSeatWorkWithQids:patternType:classType:answerIdStr:categoryId:isPaper:success:failure:");
-    if (!helperClass || ![helperClass respondsToSelector:selector]) {
-        [self showPendingNativeAction:@"做题跳转失败：YSS_HomeworkHelper 不可用" params:params];
-        return;
-    }
-    
-    NSInteger categoryId = [self integerValueFromParams:params keys:@[@"categoryId"] defaultValue:0];
-    NSString *answerIdStr = [self stringValueFromParams:params keys:@[@"answerIdStr", @"answerId", @"userAnswerId"]];
-    BOOL realIsPaper = isPaper || [self boolValueFromParams:params keys:@[@"isPaper"]];
-    NSDictionary *otherParameter = [self seatWorkOtherParameterWithParams:params serviceType:serviceType title:title fromName:fromName];
-    
-    __weak typeof(self) weakSelf = self;
-    __block BOOL pushed = NO;
-    HQUniAppXSeatWorkSuccessBlock successBlock = ^(id seatWork, BOOL inited, BOOL isFinished) {
-        __strong typeof(weakSelf) strongSelf = weakSelf;
-        if (!strongSelf || !inited || pushed || !seatWork) {
-            return;
-        }
-        pushed = YES;
-        [strongSelf configureSeatWork:seatWork otherParameter:otherParameter title:title];
-        [strongSelf runOnMainThread:^{
-            UIViewController *topVC = [strongSelf topViewController];
-            if (topVC.navigationController && [seatWork isKindOfClass:UIViewController.class]) {
-                [topVC.navigationController pushViewController:(UIViewController *)seatWork animated:YES];
-            } else {
-                [strongSelf showPendingNativeAction:@"做题跳转失败：当前页面没有 navigationController" params:params];
-            }
-        }];
-    };
-    HQUniAppXFailureBlock failureBlock = ^(NSError *error) {
-        __strong typeof(weakSelf) strongSelf = weakSelf;
-        [strongSelf showPendingNativeAction:[NSString stringWithFormat:@"做题初始化失败：%@", error.domain ?: @"unknown"] params:params];
-    };
-    
-    NSMethodSignature *signature = [helperClass methodSignatureForSelector:selector];
-    NSInvocation *invocation = [NSInvocation invocationWithMethodSignature:signature];
-    invocation.target = helperClass;
-    invocation.selector = selector;
-    NSInteger classType = HQUniAppXSeatWorkClassTypeCSPro;
-    [invocation setArgument:&qids atIndex:2];
-    [invocation setArgument:&pattern atIndex:3];
-    [invocation setArgument:&classType atIndex:4];
-    [invocation setArgument:&answerIdStr atIndex:5];
-    [invocation setArgument:&categoryId atIndex:6];
-    [invocation setArgument:&realIsPaper atIndex:7];
-    [invocation setArgument:&successBlock atIndex:8];
-    [invocation setArgument:&failureBlock atIndex:9];
-    [invocation invoke];
-}
-
-- (NSDictionary *)seatWorkOtherParameterWithParams:(NSDictionary *)params serviceType:(NSInteger)serviceType title:(NSString *)title fromName:(NSString *)fromName
-{
-    NSMutableDictionary *other = [NSMutableDictionary dictionary];
-    [other addEntriesFromDictionary:[self normalizedDictionary:params ?: @{}]];
-    
-    NSInteger goodsId = [self integerValueFromParams:params keys:@[@"goodsId"] defaultValue:0];
-    NSInteger productId = [self integerValueFromParams:params keys:@[@"productId"] defaultValue:0];
-    NSInteger categoryId = [self integerValueFromParams:params keys:@[@"categoryId"] defaultValue:0];
-    NSInteger secondCategoryId = [self integerValueFromParams:params keys:@[@"secondCategoryId"] defaultValue:0];
-    NSInteger objId = [self objectIdFromParams:params];
-    NSInteger objType = [self integerValueFromParams:params keys:@[@"objType"] defaultValue:([self integerValueFromParams:params keys:@[@"knowledgeId"] defaultValue:0] > 0 ? 3 : 2)];
-    
-    other[@"is_al"] = @1;
-    other[@"isAl"] = @1;
-    other[@"need_feedback"] = @1;
-    other[@"type"] = @(serviceType);
-    other[@"product_id"] = @(productId);
-    other[@"goods_id"] = @(goodsId);
-    other[@"categoryId"] = @(categoryId);
-    other[@"secondCategory"] = @(secondCategoryId);
-    other[@"title"] = title ?: @"";
-    other[@"fromName"] = fromName ?: @"";
-    other[@"task_id"] = @(objId);
-    other[@"objId"] = @(objId);
-    other[@"doneSource"] = @34;
-    other[@"errorType"] = @(objType == 3 ? 11 : 10);
-    if (serviceType == HQUniAppXLCServiceTypeCSPCustomBrush) {
-        other[@"pathSource"] = @2;
-        other[@"doneSource"] = @45;
-    }
-    if ([fromName isEqualToString:@"题目笔记"]) {
-        other[@"isFormQuestionNoteList"] = @1;
-    }
-    
-    id basicModel = [self productBasicModelWithParams:params];
-    if (basicModel) {
-        other[@"ProductBasicModel"] = basicModel;
-    }
-    id studyModel = [self studyInfoModelWithObjId:objId name:[self stringValueFromParams:params keys:@[@"knowledgeName", @"chapterName", @"objName", @"lessonName"]] type:objType];
-    if (studyModel) {
-        other[@"CSP_StudyInfoModel"] = studyModel;
-    }
-    return other.copy;
-}
-
-- (void)configureSeatWork:(id)seatWork otherParameter:(NSDictionary *)otherParameter title:(NSString *)title
-{
-    @try {
-        id configInfo = [seatWork valueForKey:@"configInfo"];
-        if (configInfo) {
-            [configInfo setValue:otherParameter ?: @{} forKey:@"otherParameter"];
-            [configInfo setValue:@(HQUniAppXHomeWorkTypeCSPChapterExerciseGuide) forKey:@"typeVC"];
-            if (title.length) {
-                [configInfo setValue:title forKey:@"navTitle"];
-            }
-        }
-        if ([seatWork respondsToSelector:NSSelectorFromString(@"setHomeWorkProgressSaveType:")]) {
-            [seatWork setValue:@1 forKey:@"homeWorkProgressSaveType"];
-        }
-    } @catch (NSException *exception) {
-        [self showPendingNativeAction:[NSString stringWithFormat:@"做题参数设置异常：%@", exception.reason ?: @"unknown"] params:otherParameter];
-    }
 }
 
 - (BOOL)openNativePage:(NSString *)page params:(NSDictionary *)params
@@ -389,7 +227,7 @@ typedef void (^HQUniAppXFailureBlock)(NSError *error);
         return YES;
     }
     if ([route isEqualToString:@"cspro/doAllWrongQuestionList"]) {
-        [self openWrongQuestionPracticeWithParams:mergedParams.copy];
+        [self gotoSeatwork:mergedParams action:route];
         return YES;
     }
     if ([route isEqualToString:@"cspro/frequencyErrorQuestionList"]) {
@@ -473,21 +311,6 @@ typedef void (^HQUniAppXFailureBlock)(NSError *error);
         return;
     }
     [self openNativePage:@"hqwx://YSS7_QuestionErrorContainVC" params:routerParams];
-}
-
-- (void)openWrongQuestionPracticeWithParams:(NSDictionary *)params
-{
-    NSMutableDictionary *practiceParams = [self normalizedDictionary:params].mutableCopy;
-    NSString *qids = [self stringValueFromParams:params keys:@[@"questionIds", @"questionIdList", @"quesitonIdList", @"qids", @"questionId"]];
-    if (qids.length) {
-        practiceParams[@"questionIds"] = qids;
-    }
-    [self openSeatWorkWithParams:practiceParams
-                         pattern:HQUniAppXPatternTypeSeatWorkAnswer
-                      serviceType:HQUniAppXLCServiceTypeCSPChapterExercise
-                            title:@"错题练习"
-                         fromName:@"错题本"
-                          isPaper:NO];
 }
 
 - (void)openFrequencyErrorQuestionListWithParams:(NSDictionary *)params
@@ -681,7 +504,7 @@ typedef void (^HQUniAppXFailureBlock)(NSError *error);
     [self safeSetInteger:[self integerValueFromParams:params keys:@[@"productId"] defaultValue:0] forKey:@"productId" object:model];
     [self safeSetInteger:[self integerValueFromParams:params keys:@[@"categoryId"] defaultValue:0] forKey:@"categoryId" object:model];
     [self safeSetInteger:[self integerValueFromParams:params keys:@[@"secondCategoryId", @"secondCategory", @"secondId"] defaultValue:0] forKey:@"secondCategoryId" object:model];
-    [self safeSetBool:YES forKey:@"isCSPVersion7" object:model];
+    [self safeSetBool:[[HQUniAppXLaunchStore sharedStore] isAl] forKey:@"isCSPVersion7" object:model];
     return model;
 }
 
