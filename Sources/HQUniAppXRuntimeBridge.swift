@@ -82,6 +82,13 @@ public final class HQUniAppXRuntimeBridge: NSObject {
             UniAppXSDK.exit()
             didStart = false
         }
+        if let helperClass = NSClassFromString("HqNavigationDelegateHelper") as? NSObject.Type {
+            let selector = NSSelectorFromString("addNeedHiddenNavBarViewControllers:")
+            if helperClass.responds(to: selector) {
+                _ = helperClass.perform(selector, with: hiddenNavigationBarViewControllerClassNames())
+            }
+        }
+        configureHiddenNavigationBarForUniAppXRoot(from: viewController)
         UniAppXSDK.start(options: options)
         registerNativeBridgeGlobalObject()
         didStart = true
@@ -95,6 +102,13 @@ public final class HQUniAppXRuntimeBridge: NSObject {
     public static func exit() {
         UniAppXSDK.exit()
         didStart = false
+    }
+
+    private static func hiddenNavigationBarViewControllerClassNames() -> [String] {
+        [
+            "HQUniAppXContainerViewController",
+            NSStringFromClass(UniAppRootViewController.self)
+        ]
     }
 
     private static func launchOptions(from options: [AnyHashable: Any]?) -> [UIApplication.LaunchOptionsKey: Any]? {
