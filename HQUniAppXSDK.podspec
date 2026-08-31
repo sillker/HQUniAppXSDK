@@ -1,6 +1,6 @@
 Pod::Spec.new do |s|
   s.name = 'HQUniAppXSDK'
-  s.version = '1.0.0'
+  s.version = '1.0.1'
   s.summary = 'HQ Pad HD UniAppX native bridge.'
   s.homepage = 'https://www.hqwx.com'
   s.license = { :type => 'Proprietary', :text => 'Copyright edu24ol.' }
