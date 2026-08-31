@@ -5,7 +5,7 @@ Pod::Spec.new do |s|
   s.homepage = 'https://github.com/SDWebImage/SDWebImage'
   s.license = { :type => 'MIT' }
   s.author = { 'SDWebImage' => 'https://github.com/SDWebImage/SDWebImage' }
-  s.source = { :git => 'https://github.com/sillker/HQUniAppXSDK.git', :tag => '1.0.1' }
+  s.source = { :git => 'https://github.com/sillker/HQUniAppXSDK.git', :tag => '1.0.0' }
   s.platform = :ios, '13.0'
   s.default_subspec = 'Core'
 
