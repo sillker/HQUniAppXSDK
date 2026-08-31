@@ -7,6 +7,7 @@
 
 import DCloudUniappRuntime
 import Foundation
+import ObjectiveC
 import UIKit
 
 @objc(HQUniAppXRuntimeBridge)
@@ -14,6 +15,7 @@ import UIKit
 public final class HQUniAppXRuntimeBridge: NSObject {
     private static var didSetup = false
     private static var didStart = false
+    private static var targetUrlAssociationKey: UInt8 = 0
 
     @objc(setup)
     public static func setup() {
@@ -71,6 +73,7 @@ public final class HQUniAppXRuntimeBridge: NSObject {
     public static func start(from viewController: UIViewController) -> Bool {
         let options = UniAppXSDKStartOptions()
         let launchUrl = currentLaunchUrl()
+        let rawTargetUrl = currentRawTargetUrl()
         logStartDiagnostics(launchUrl: launchUrl)
         options.appScheme = launchUrl
         options.appLink = launchUrl
@@ -78,7 +81,18 @@ public final class HQUniAppXRuntimeBridge: NSObject {
         options.animationType = .auto
         options.viewController = viewController
         viewController.navigationController?.setNavigationBarHidden(true, animated: false)
-        if didStart, containsUniAppRootViewController(in: viewController.navigationController) {
+        if let existingUniAppRoot = existingUniAppRootViewController(in: viewController.navigationController, targetUrl: rawTargetUrl) {
+            viewController.navigationController?.popToViewController(existingUniAppRoot, animated: true)
+            configureHiddenNavigationBarForUniAppXRoot(existingUniAppRoot)
+            return true
+        }
+        if containsUniAppRootViewController(in: viewController.navigationController) {
+            if didStart {
+                UniAppXSDK.exit()
+                didStart = false
+            }
+            removeExistingUniAppRootViewControllers(from: viewController.navigationController, keeping: viewController)
+        } else if didStart {
             UniAppXSDK.exit()
             didStart = false
         }
@@ -142,22 +156,34 @@ public final class HQUniAppXRuntimeBridge: NSObject {
     }
 
     private static func currentLaunchUrl() -> String {
-        guard let params = UserDefaults.standard.dictionary(forKey: "HQUniAppXLaunchParamsDefaultsKey") else {
-            return "__UNI__DF02813://pages/router/router"
-        }
-
-        let rawTargetUrl = params["targetUrl"] as? String ?? ""
+        let rawTargetUrl = currentRawTargetUrl()
         guard !rawTargetUrl.isEmpty else {
             return "__UNI__DF02813://pages/router/router"
         }
         
-        let targetParams = params["targetParams"] as? [String: Any] ?? [:]
+        let targetParams = currentTargetParams()
         var query: [String: Any] = [
             "targetUrl": rawTargetUrl,
             "targetParams": jsonString(from: targetParams)
         ]
         query["publicParams"] = jsonString(from: publicParams())
         return "__UNI__DF02813://pages/router/router?\(queryString(from: query))"
+    }
+
+    private static func currentRawTargetUrl() -> String {
+        guard let params = UserDefaults.standard.dictionary(forKey: "HQUniAppXLaunchParamsDefaultsKey") else {
+            return ""
+        }
+
+        let rawTargetUrl = params["targetUrl"] as? String ?? ""
+        return rawTargetUrl
+    }
+
+    private static func currentTargetParams() -> [String: Any] {
+        guard let params = UserDefaults.standard.dictionary(forKey: "HQUniAppXLaunchParamsDefaultsKey") else {
+            return [:]
+        }
+        return params["targetParams"] as? [String: Any] ?? [:]
     }
 
     private static func publicParams() -> [String: Any] {
@@ -208,6 +234,11 @@ public final class HQUniAppXRuntimeBridge: NSObject {
               NSStringFromClass(type(of: uniAppRoot)).contains("UniAppRootViewController") else {
             return
         }
+        setAssociatedTargetUrl(currentRawTargetUrl(), for: uniAppRoot)
+        configureHiddenNavigationBarForUniAppXRoot(uniAppRoot)
+    }
+
+    private static func configureHiddenNavigationBarForUniAppXRoot(_ uniAppRoot: UIViewController) {
         uniAppRoot.setValue(true, forKey: "fd_prefersNavigationBarHidden")
         guard let helperClass = NSClassFromString("HqNavigationDelegateHelper") as? NSObject.Type else {
             return
@@ -224,8 +255,47 @@ public final class HQUniAppXRuntimeBridge: NSObject {
             return false
         }
         return navigationController.viewControllers.contains { viewController in
-            NSStringFromClass(type(of: viewController)).contains("UniAppRootViewController")
+            isUniAppRootViewController(viewController)
         }
+    }
+
+    private static func existingUniAppRootViewController(in navigationController: UINavigationController?, targetUrl: String) -> UIViewController? {
+        guard !targetUrl.isEmpty,
+              let navigationController = navigationController else {
+            return nil
+        }
+        return navigationController.viewControllers.first { viewController in
+            isUniAppRootViewController(viewController) && associatedTargetUrl(for: viewController) == targetUrl
+        }
+    }
+
+    private static func removeExistingUniAppRootViewControllers(from navigationController: UINavigationController?, keeping currentViewController: UIViewController) {
+        guard let navigationController = navigationController else {
+            return
+        }
+        let filteredViewControllers = navigationController.viewControllers.filter { viewController in
+            viewController === currentViewController || !isUniAppRootViewController(viewController)
+        }
+        guard filteredViewControllers.count != navigationController.viewControllers.count,
+              !filteredViewControllers.isEmpty else {
+            return
+        }
+        navigationController.setViewControllers(filteredViewControllers, animated: false)
+    }
+
+    private static func isUniAppRootViewController(_ viewController: UIViewController) -> Bool {
+        NSStringFromClass(type(of: viewController)).contains("UniAppRootViewController")
+    }
+
+    private static func setAssociatedTargetUrl(_ targetUrl: String, for viewController: UIViewController) {
+        guard !targetUrl.isEmpty else {
+            return
+        }
+        objc_setAssociatedObject(viewController, &targetUrlAssociationKey, targetUrl, .OBJC_ASSOCIATION_COPY_NONATOMIC)
+    }
+
+    private static func associatedTargetUrl(for viewController: UIViewController) -> String? {
+        objc_getAssociatedObject(viewController, &targetUrlAssociationKey) as? String
     }
 
     private static func logStartDiagnostics(launchUrl: String) {
