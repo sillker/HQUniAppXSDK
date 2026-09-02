@@ -315,16 +315,16 @@
 
 - (void)openFrequencyErrorQuestionListWithParams:(NSDictionary *)params
 {
-    id basicModel = [self productBasicModelWithParams:params];
-    if (!basicModel) {
-        [self showPendingNativeAction:@"高频易错跳转失败：ProductBasicModel 不可用" params:params];
+    NSMutableDictionary *dict = @{@"action":@"cspro/frequencyErrorQuestionList"}.mutableCopy;
+    if (params) {
+        dict[@"actionParams"] = params;
+    }
+    if ([HQUniAppXLaunchStore sharedStore].currentLaunchParams) {
+        dict[@"currentLaunchParams"] = [HQUniAppXLaunchStore sharedStore].currentLaunchParams;
+    }
+    if ([self openNativePage:@"hqwx://GZXXUniappEventTool" params:dict]) {
         return;
     }
-    NSInteger type = [self integerValueFromParams:params keys:@[@"type"] defaultValue:1];
-    [self openNativePage:@"hqwx://YSS7_QuestionErrorProneListVC" params:@{
-        @"ProductBasicModel" : basicModel,
-        @"type" : @(type)
-    }];
 }
 
 - (void)openQuestionExerciseListWithParams:(NSDictionary *)params type:(NSInteger)type typeName:(NSString *)typeName
