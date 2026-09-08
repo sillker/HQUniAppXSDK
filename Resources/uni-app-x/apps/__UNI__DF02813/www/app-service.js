@@ -455,7 +455,7 @@
   function resolveEasycom(component, easycom) {
     return typeof component === "string" ? easycom : component;
   }
-  const _imports_0$d = "/static/images/ico-back.svg";
+  const _imports_0$e = "/static/images/ico-back.svg";
   const _sfc_main$t = /* @__PURE__ */ vue.defineComponent({
     __name: "c-navbar",
     props: ["title"],
@@ -494,7 +494,7 @@
               }), [
                 vue.createElementVNode("image", new UTSJSONObject({
                   class: "ico",
-                  src: _imports_0$d
+                  src: _imports_0$e
                 }))
               ]),
               vue.createElementVNode("view", new UTSJSONObject({ class: "content" }), [
@@ -925,7 +925,9 @@
   });
   const _style_0$r = { "list": { "": { "display": "flex", "flexDirection": "row", "alignItems": "center", "height": "17rpx" } }, "text": { ".item ": { "fontWeight": "bold", "fontSize": "13rpx", "color": "#6B6C87", "lineHeight": "17rpx" } }, "active": { ".item ": { "fontSize": "13rpx", "color": "#00010F" } } };
   const __easycom_4 = /* @__PURE__ */ _export_sfc(_sfc_main$s, [["styles", [_style_0$r]]]);
-  const _imports_0$c = "/static/images/page-bg.png";
+  const _imports_0$d = "/static/images/page-bg.png";
+  const _imports_0$c = "/static/images/grade-status-01.png";
+  const _imports_1$9 = "/static/images/grade-status-02.png";
   const _imports_1$8 = "/static/images/ico-chart-line.png";
   function timeFormat(timestamp, fmt = "yyyy-mm-dd") {
     let rfmt = fmt;
@@ -973,30 +975,43 @@
       delete this.__props__;
     }
   }
-  function streamDecoder(requestTask, message) {
-    requestTask.onChunkReceived((res) => {
-      const chunkText = new TextDecoder().decode(res.data);
-      const lines = chunkText.trim().split("\n");
-      let eventType = "", jsonData = null;
-      lines.forEach((line) => {
+  function parseStreamText(text) {
+    const messages = new Array();
+    const blocks = text.replace(/\r\n/g, "\n").split("\n\n");
+    blocks.forEach((block) => {
+      let eventType = "", dataStr = "";
+      block.split("\n").forEach((line) => {
         if (line.startsWith("event:")) {
           eventType = line.substring(6).trim();
         } else if (line.startsWith("data:")) {
-          const dataStr = line.substring(5).trim();
-          if (dataStr != "") {
-            try {
-              jsonData = UTS.JSON.parse(dataStr);
-            } catch (error) {
-              uni.__log__("error", "at utils/tools.uts:54", "JSON解析失败:", error);
-            }
-          }
-          if (jsonData != null) {
-            message(new StreamMessage({
-              event: eventType,
-              data: jsonData
-            }));
-          }
+          dataStr += line.substring(5).trim();
         }
+      });
+      if (dataStr != "") {
+        try {
+          messages.push(new StreamMessage({
+            event: eventType,
+            data: UTS.JSON.parse(dataStr)
+          }));
+        } catch (error) {
+          uni.__log__("error", "at utils/tools.uts:59", "JSON解析失败:", error);
+        }
+      }
+    });
+    return messages;
+  }
+  function streamDecoder(requestTask, message) {
+    let pendingText = "";
+    requestTask.onChunkReceived((res) => {
+      const chunkText = new TextDecoder().decode(res.data).replace(/\r\n/g, "\n");
+      pendingText += chunkText;
+      const lastSeparatorIndex = pendingText.lastIndexOf("\n\n");
+      if (lastSeparatorIndex < 0)
+        return null;
+      const completeText = pendingText.substring(0, lastSeparatorIndex);
+      pendingText = pendingText.substring(lastSeparatorIndex + 2);
+      parseStreamText(completeText).forEach((item) => {
+        message(item);
       });
     });
   }
@@ -1013,7 +1028,7 @@
   function handleAppAction(action = "", params = null) {
     const safeAction = action !== null && action !== void 0 ? action : "";
     const safeParams = params !== null && params !== void 0 ? params : new UTSJSONObject();
-    uni.__log__("log", "at utils/tools.uts:87", "调用原生方法", safeAction);
+    uni.__log__("log", "at utils/tools.uts:101", "调用原生方法", safeAction);
     handleAction(safeAction, safeParams);
   }
   const _sfc_main$r = /* @__PURE__ */ vue.defineComponent({
@@ -2231,17 +2246,58 @@
         http.post("/ai/al/assistant/getStudySuggestionStream", data, new UTSJSONObject({
           enableChunked: true,
           httpTaskKey
-        }));
+        })).then((res = null) => {
+          if (suggestHtml.value == "") {
+            appendStudySuggestionFromResponse(res);
+          }
+        }).catch((err = null) => {
+          uni.__log__("error", "at pages/study-report/modules/total-report.uvue:366", "[study-report] getStudySuggestionStream failed", err);
+        });
         let requestTask = UTS.mapGet(http.requestTaskMap, httpTaskKey);
         if (requestTask != null) {
           streamDecoder(requestTask, (res) => {
-            var _a, _b;
-            if (res.event == "content") {
-              if (((_a = res.data) === null || _a === void 0 ? null : _a.type) == "text") {
-                suggestHtml.value += (_b = res.data) === null || _b === void 0 ? null : _b.data;
-              }
-            }
+            appendStudySuggestionMessage(res);
           });
+        }
+      }
+      function appendStudySuggestionMessage(res) {
+        var _a;
+        if (res.event == "content") {
+          let data = (_a = res.data) !== null && _a !== void 0 ? _a : new UTSJSONObject({});
+          if (data.type == "text") {
+            appendStudySuggestionText(data.data);
+          }
+        }
+      }
+      function appendStudySuggestionText(data = null) {
+        if (typeof data == "string") {
+          suggestHtml.value += data;
+        }
+      }
+      function appendStudySuggestionTextOrStream(text) {
+        let messages = parseStreamText(text);
+        if (messages.length > 0) {
+          messages.forEach((item) => {
+            appendStudySuggestionMessage(item);
+          });
+        } else {
+          appendStudySuggestionText(text);
+        }
+      }
+      function appendStudySuggestionFromResponse(res = null) {
+        var _a, _b;
+        if (typeof res == "string") {
+          appendStudySuggestionTextOrStream(res);
+          return null;
+        }
+        let data = (_b = (_a = res) === null || _a === void 0 ? null : _a.data) !== null && _b !== void 0 ? _b : null;
+        if (typeof data == "string") {
+          appendStudySuggestionTextOrStream(data);
+        } else if (data != null) {
+          appendStudySuggestionMessage(new UTSJSONObject({
+            event: "content",
+            data
+          }));
         }
       }
       const switchTimeFilter = (index) => {
@@ -2314,10 +2370,15 @@
             ]),
             vue.createElementVNode("view", new UTSJSONObject({ class: "study-status-box" }), [
               vue.createElementVNode("view", new UTSJSONObject({ class: "value" }), [
-                vue.createElementVNode("image", new UTSJSONObject({
+                vue.unref(studyProgress) == 1 ? (vue.openBlock(), vue.createElementBlock("image", new UTSJSONObject({
+                  key: 0,
                   class: "image",
-                  src: "static/images/grade-status-0".concat(vue.unref(studyProgress), ".png")
-                }), null, 8, ["src"])
+                  src: _imports_0$c
+                }))) : vue.unref(studyProgress) == 2 ? (vue.openBlock(), vue.createElementBlock("image", new UTSJSONObject({
+                  key: 1,
+                  class: "image",
+                  src: _imports_1$9
+                }))) : vue.createCommentVNode("", true)
               ]),
               vue.createElementVNode("text", new UTSJSONObject({ class: "label" }), "你当前的学习进度")
             ])
@@ -3043,7 +3104,7 @@
         return vue.openBlock(), vue.createElementBlock("scroll-view", new UTSJSONObject({ style: new UTSJSONObject({ "flex": "1" }) }), [
           vue.createElementVNode("image", new UTSJSONObject({
             class: "page-bg",
-            src: _imports_0$c
+            src: _imports_0$d
           })),
           vue.createVNode(_component_c_navbar, new UTSJSONObject({ class: "navbar" }), {
             ["navbar-right"]: vue.withCtx(() => {
