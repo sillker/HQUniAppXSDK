@@ -251,6 +251,11 @@
         [self openPhotoSearchWithParams:mergedParams.copy];
         return YES;
     }
+    if ([route isEqualToString:@"cspro/knowledgePointMasterDetail"] ||
+        [route isEqualToString:@"cspro/classDetail"]) {
+        [self openKnowledgeOverviewWithParams:mergedParams.copy route:route];
+        return YES;
+    }
     return NO;
 }
 
@@ -367,6 +372,18 @@
     [self openNativePage:@"hqwx://YSS7_SnapSearchVC" params:@{
         @"ProductBasicModel" : basicModel
     }];
+}
+
+- (void)openKnowledgeOverviewWithParams:(NSDictionary *)params route:(NSString *)route
+{
+    NSMutableDictionary *dict = @{ @"action" : route ?: @"" }.mutableCopy;
+    if (params) {
+        dict[@"actionParams"] = params;
+    }
+    if ([HQUniAppXLaunchStore sharedStore].currentLaunchParams) {
+        dict[@"currentLaunchParams"] = [HQUniAppXLaunchStore sharedStore].currentLaunchParams;
+    }
+    [self openNativePage:@"hqwx://GZXXUniappEventTool" params:dict.copy];
 }
 
 - (void)closeUniAppXPage

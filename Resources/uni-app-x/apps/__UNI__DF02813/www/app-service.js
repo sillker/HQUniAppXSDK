@@ -2206,6 +2206,7 @@
           let stageOverviewVOList = (_a2 = info.stageOverviewVOList) !== null && _a2 !== void 0 ? _a2 : new Array();
           stageOverviewVOList.forEach((item, index) => {
             var _a3, _b2;
+            stageList[index].stageId = item.stageId;
             stageList[index].stageName = item.stageName;
             stageList[index].percent = item.stageCompleteRate * 100;
             stageList[index].val1 = (_a3 = item.completeStudyPathNum) !== null && _a3 !== void 0 ? _a3 : 0;
