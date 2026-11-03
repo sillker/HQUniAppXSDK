@@ -1,0 +1,592 @@
+{
+  "ABIRoot": {
+    "kind": "Root",
+    "name": "unimoduleUtsHqwxdata",
+    "printedName": "unimoduleUtsHqwxdata",
+    "children": [
+      {
+        "kind": "Import",
+        "name": "Foundation",
+        "printedName": "Foundation",
+        "declKind": "Import",
+        "moduleName": "unimoduleUtsHqwxdata"
+      },
+      {
+        "kind": "TypeDecl",
+        "name": "HQWXDataIOSBridge",
+        "printedName": "HQWXDataIOSBridge",
+        "children": [
+          {
+            "kind": "Function",
+            "name": "getPublicParamsJSON",
+            "printedName": "getPublicParamsJSON()",
+            "children": [
+              {
+                "kind": "TypeNominal",
+                "name": "String",
+                "printedName": "Swift.String",
+                "usr": "s:SS"
+              }
+            ],
+            "declKind": "Func",
+            "usr": "c:@M@unimoduleUtsHqwxdata@objc(cs)HQWXDataIOSBridge(cm)getPublicParamsJSON",
+            "mangledName": "$s20unimoduleUtsHqwxdata17HQWXDataIOSBridgeC19getPublicParamsJSONSSyFZ",
+            "moduleName": "unimoduleUtsHqwxdata",
+            "static": true,
+            "declAttributes": [
+              "Final",
+              "AccessControl",
+              "ObjC"
+            ],
+            "funcSelfKind": "NonMutating"
+          },
+          {
+            "kind": "Function",
+            "name": "getLaunchParamsJSON",
+            "printedName": "getLaunchParamsJSON()",
+            "children": [
+              {
+                "kind": "TypeNominal",
+                "name": "String",
+                "printedName": "Swift.String",
+                "usr": "s:SS"
+              }
+            ],
+            "declKind": "Func",
+            "usr": "c:@M@unimoduleUtsHqwxdata@objc(cs)HQWXDataIOSBridge(cm)getLaunchParamsJSON",
+            "mangledName": "$s20unimoduleUtsHqwxdata17HQWXDataIOSBridgeC19getLaunchParamsJSONSSyFZ",
+            "moduleName": "unimoduleUtsHqwxdata",
+            "static": true,
+            "declAttributes": [
+              "Final",
+              "AccessControl",
+              "ObjC"
+            ],
+            "funcSelfKind": "NonMutating"
+          },
+          {
+            "kind": "Function",
+            "name": "handleActionJSON",
+            "printedName": "handleActionJSON(_:_:)",
+            "children": [
+              {
+                "kind": "TypeNominal",
+                "name": "Void",
+                "printedName": "()"
+              },
+              {
+                "kind": "TypeNominal",
+                "name": "String",
+                "printedName": "Swift.String",
+                "usr": "s:SS"
+              },
+              {
+                "kind": "TypeNominal",
+                "name": "String",
+                "printedName": "Swift.String",
+                "usr": "s:SS"
+              }
+            ],
+            "declKind": "Func",
+            "usr": "c:@M@unimoduleUtsHqwxdata@objc(cs)HQWXDataIOSBridge(cm)handleActionJSON::",
+            "mangledName": "$s20unimoduleUtsHqwxdata17HQWXDataIOSBridgeC16handleActionJSONyySS_SStFZ",
+            "moduleName": "unimoduleUtsHqwxdata",
+            "static": true,
+            "declAttributes": [
+              "Final",
+              "AccessControl",
+              "ObjC"
+            ],
+            "funcSelfKind": "NonMutating"
+          },
+          {
+            "kind": "Function",
+            "name": "handlePageSwift",
+            "printedName": "handlePageSwift(_:)",
+            "children": [
+              {
+                "kind": "TypeNominal",
+                "name": "Void",
+                "printedName": "()"
+              },
+              {
+                "kind": "TypeNominal",
+                "name": "String",
+                "printedName": "Swift.String",
+                "usr": "s:SS"
+              }
+            ],
+            "declKind": "Func",
+            "usr": "c:@M@unimoduleUtsHqwxdata@objc(cs)HQWXDataIOSBridge(cm)handlePageSwift:",
+            "mangledName": "$s20unimoduleUtsHqwxdata17HQWXDataIOSBridgeC15handlePageSwiftyySSFZ",
+            "moduleName": "unimoduleUtsHqwxdata",
+            "static": true,
+            "declAttributes": [
+              "Final",
+              "AccessControl",
+              "ObjC"
+            ],
+            "funcSelfKind": "NonMutating"
+          },
+          {
+            "kind": "Constructor",
+            "name": "init",
+            "printedName": "init()",
+            "children": [
+              {
+                "kind": "TypeNominal",
+                "name": "HQWXDataIOSBridge",
+                "printedName": "unimoduleUtsHqwxdata.HQWXDataIOSBridge",
+                "usr": "c:@M@unimoduleUtsHqwxdata@objc(cs)HQWXDataIOSBridge"
+              }
+            ],
+            "declKind": "Constructor",
+            "usr": "c:@M@unimoduleUtsHqwxdata@objc(cs)HQWXDataIOSBridge(im)init",
+            "mangledName": "$s20unimoduleUtsHqwxdata17HQWXDataIOSBridgeCACycfc",
+            "moduleName": "unimoduleUtsHqwxdata",
+            "overriding": true,
+            "implicit": true,
+            "objc_name": "init",
+            "declAttributes": [
+              "Dynamic",
+              "ObjC",
+              "Override"
+            ],
+            "init_kind": "Designated"
+          }
+        ],
+        "declKind": "Class",
+        "usr": "c:@M@unimoduleUtsHqwxdata@objc(cs)HQWXDataIOSBridge",
+        "mangledName": "$s20unimoduleUtsHqwxdata17HQWXDataIOSBridgeC",
+        "moduleName": "unimoduleUtsHqwxdata",
+        "objc_name": "HQWXDataIOSBridge",
+        "declAttributes": [
+          "Final",
+          "AccessControl",
+          "ObjCMembers",
+          "ObjC"
+        ],
+        "superclassUsr": "c:objc(cs)NSObject",
+        "inheritsConvenienceInitializers": true,
+        "superclassNames": [
+          "ObjectiveC.NSObject"
+        ],
+        "conformances": [
+          {
+            "kind": "Conformance",
+            "name": "_KeyValueCodingAndObserving",
+            "printedName": "_KeyValueCodingAndObserving",
+            "usr": "s:10Foundation27_KeyValueCodingAndObservingP",
+            "mangledName": "$s10Foundation27_KeyValueCodingAndObservingP"
+          },
+          {
+            "kind": "Conformance",
+            "name": "_KeyValueCodingAndObservingPublishing",
+            "printedName": "_KeyValueCodingAndObservingPublishing",
+            "usr": "s:10Foundation37_KeyValueCodingAndObservingPublishingP",
+            "mangledName": "$s10Foundation37_KeyValueCodingAndObservingPublishingP"
+          },
+          {
+            "kind": "Conformance",
+            "name": "CVarArg",
+            "printedName": "CVarArg",
+            "usr": "s:s7CVarArgP",
+            "mangledName": "$ss7CVarArgP"
+          },
+          {
+            "kind": "Conformance",
+            "name": "Copyable",
+            "printedName": "Copyable",
+            "usr": "s:s8CopyableP",
+            "mangledName": "$ss8CopyableP"
+          },
+          {
+            "kind": "Conformance",
+            "name": "CustomDebugStringConvertible",
+            "printedName": "CustomDebugStringConvertible",
+            "usr": "s:s28CustomDebugStringConvertibleP",
+            "mangledName": "$ss28CustomDebugStringConvertibleP"
+          },
+          {
+            "kind": "Conformance",
+            "name": "CustomStringConvertible",
+            "printedName": "CustomStringConvertible",
+            "usr": "s:s23CustomStringConvertibleP",
+            "mangledName": "$ss23CustomStringConvertibleP"
+          },
+          {
+            "kind": "Conformance",
+            "name": "Equatable",
+            "printedName": "Equatable",
+            "usr": "s:SQ",
+            "mangledName": "$sSQ"
+          },
+          {
+            "kind": "Conformance",
+            "name": "Escapable",
+            "printedName": "Escapable",
+            "usr": "s:s9EscapableP",
+            "mangledName": "$ss9EscapableP"
+          },
+          {
+            "kind": "Conformance",
+            "name": "Hashable",
+            "printedName": "Hashable",
+            "usr": "s:SH",
+            "mangledName": "$sSH"
+          }
+        ]
+      },
+      {
+        "kind": "Import",
+        "name": "DCloudUTSFoundation",
+        "printedName": "DCloudUTSFoundation",
+        "declKind": "Import",
+        "moduleName": "unimoduleUtsHqwxdata"
+      },
+      {
+        "kind": "Import",
+        "name": "Foundation",
+        "printedName": "Foundation",
+        "declKind": "Import",
+        "moduleName": "unimoduleUtsHqwxdata"
+      },
+      {
+        "kind": "Function",
+        "name": "getPublicParamsByJs",
+        "printedName": "getPublicParamsByJs()",
+        "children": [
+          {
+            "kind": "TypeNominal",
+            "name": "UTSJSONObject",
+            "printedName": "DCloudUTSFoundation.UTSJSONObject",
+            "usr": "c:@M@DCloudUTSFoundation@objc(cs)UTSJSONObject"
+          }
+        ],
+        "declKind": "Func",
+        "usr": "s:20unimoduleUtsHqwxdata19getPublicParamsByJs19DCloudUTSFoundation13UTSJSONObjectCyF",
+        "mangledName": "$s20unimoduleUtsHqwxdata19getPublicParamsByJs19DCloudUTSFoundation13UTSJSONObjectCyF",
+        "moduleName": "unimoduleUtsHqwxdata",
+        "declAttributes": [
+          "AccessControl"
+        ],
+        "funcSelfKind": "NonMutating"
+      },
+      {
+        "kind": "Function",
+        "name": "getLaunchParamsByJs",
+        "printedName": "getLaunchParamsByJs()",
+        "children": [
+          {
+            "kind": "TypeNominal",
+            "name": "UTSJSONObject",
+            "printedName": "DCloudUTSFoundation.UTSJSONObject",
+            "usr": "c:@M@DCloudUTSFoundation@objc(cs)UTSJSONObject"
+          }
+        ],
+        "declKind": "Func",
+        "usr": "s:20unimoduleUtsHqwxdata19getLaunchParamsByJs19DCloudUTSFoundation13UTSJSONObjectCyF",
+        "mangledName": "$s20unimoduleUtsHqwxdata19getLaunchParamsByJs19DCloudUTSFoundation13UTSJSONObjectCyF",
+        "moduleName": "unimoduleUtsHqwxdata",
+        "declAttributes": [
+          "AccessControl"
+        ],
+        "funcSelfKind": "NonMutating"
+      },
+      {
+        "kind": "Function",
+        "name": "handleActionByJs",
+        "printedName": "handleActionByJs(_:_:)",
+        "children": [
+          {
+            "kind": "TypeNominal",
+            "name": "Void",
+            "printedName": "()"
+          },
+          {
+            "kind": "TypeNominal",
+            "name": "String",
+            "printedName": "Swift.String",
+            "usr": "s:SS"
+          },
+          {
+            "kind": "TypeNominal",
+            "name": "UTSJSONObject",
+            "printedName": "DCloudUTSFoundation.UTSJSONObject",
+            "usr": "c:@M@DCloudUTSFoundation@objc(cs)UTSJSONObject"
+          }
+        ],
+        "declKind": "Func",
+        "usr": "s:20unimoduleUtsHqwxdata16handleActionByJsyySS_19DCloudUTSFoundation13UTSJSONObjectCtF",
+        "mangledName": "$s20unimoduleUtsHqwxdata16handleActionByJsyySS_19DCloudUTSFoundation13UTSJSONObjectCtF",
+        "moduleName": "unimoduleUtsHqwxdata",
+        "declAttributes": [
+          "AccessControl"
+        ],
+        "funcSelfKind": "NonMutating"
+      },
+      {
+        "kind": "Function",
+        "name": "handlePageByJs",
+        "printedName": "handlePageByJs(_:)",
+        "children": [
+          {
+            "kind": "TypeNominal",
+            "name": "Void",
+            "printedName": "()"
+          },
+          {
+            "kind": "TypeNominal",
+            "name": "String",
+            "printedName": "Swift.String",
+            "usr": "s:SS"
+          }
+        ],
+        "declKind": "Func",
+        "usr": "s:20unimoduleUtsHqwxdata14handlePageByJsyySSF",
+        "mangledName": "$s20unimoduleUtsHqwxdata14handlePageByJsyySSF",
+        "moduleName": "unimoduleUtsHqwxdata",
+        "declAttributes": [
+          "AccessControl"
+        ],
+        "funcSelfKind": "NonMutating"
+      },
+      {
+        "kind": "TypeDecl",
+        "name": "UTSSDKModulesUtsHqwxdataIndexSwift",
+        "printedName": "UTSSDKModulesUtsHqwxdataIndexSwift",
+        "children": [
+          {
+            "kind": "Function",
+            "name": "s_getPublicParamsByJs",
+            "printedName": "s_getPublicParamsByJs()",
+            "children": [
+              {
+                "kind": "TypeNominal",
+                "name": "UTSJSONObject",
+                "printedName": "DCloudUTSFoundation.UTSJSONObject",
+                "usr": "c:@M@DCloudUTSFoundation@objc(cs)UTSJSONObject"
+              }
+            ],
+            "declKind": "Func",
+            "usr": "c:@M@unimoduleUtsHqwxdata@objc(cs)UTSSDKModulesUtsHqwxdataIndexSwift(cm)s_getPublicParamsByJs",
+            "mangledName": "$s20unimoduleUtsHqwxdata013UTSSDKModulesbC10IndexSwiftC21s_getPublicParamsByJs19DCloudUTSFoundation13UTSJSONObjectCyFZ",
+            "moduleName": "unimoduleUtsHqwxdata",
+            "static": true,
+            "declAttributes": [
+              "Final",
+              "AccessControl",
+              "ObjC"
+            ],
+            "funcSelfKind": "NonMutating"
+          },
+          {
+            "kind": "Function",
+            "name": "s_getLaunchParamsByJs",
+            "printedName": "s_getLaunchParamsByJs()",
+            "children": [
+              {
+                "kind": "TypeNominal",
+                "name": "UTSJSONObject",
+                "printedName": "DCloudUTSFoundation.UTSJSONObject",
+                "usr": "c:@M@DCloudUTSFoundation@objc(cs)UTSJSONObject"
+              }
+            ],
+            "declKind": "Func",
+            "usr": "c:@M@unimoduleUtsHqwxdata@objc(cs)UTSSDKModulesUtsHqwxdataIndexSwift(cm)s_getLaunchParamsByJs",
+            "mangledName": "$s20unimoduleUtsHqwxdata013UTSSDKModulesbC10IndexSwiftC21s_getLaunchParamsByJs19DCloudUTSFoundation13UTSJSONObjectCyFZ",
+            "moduleName": "unimoduleUtsHqwxdata",
+            "static": true,
+            "declAttributes": [
+              "Final",
+              "AccessControl",
+              "ObjC"
+            ],
+            "funcSelfKind": "NonMutating"
+          },
+          {
+            "kind": "Function",
+            "name": "s_handleActionByJs",
+            "printedName": "s_handleActionByJs(_:_:)",
+            "children": [
+              {
+                "kind": "TypeNominal",
+                "name": "Void",
+                "printedName": "()"
+              },
+              {
+                "kind": "TypeNominal",
+                "name": "String",
+                "printedName": "Swift.String",
+                "usr": "s:SS"
+              },
+              {
+                "kind": "TypeNominal",
+                "name": "UTSJSONObject",
+                "printedName": "DCloudUTSFoundation.UTSJSONObject",
+                "usr": "c:@M@DCloudUTSFoundation@objc(cs)UTSJSONObject"
+              }
+            ],
+            "declKind": "Func",
+            "usr": "c:@M@unimoduleUtsHqwxdata@objc(cs)UTSSDKModulesUtsHqwxdataIndexSwift(cm)s_handleActionByJs::",
+            "mangledName": "$s20unimoduleUtsHqwxdata013UTSSDKModulesbC10IndexSwiftC18s_handleActionByJsyySS_19DCloudUTSFoundation13UTSJSONObjectCtFZ",
+            "moduleName": "unimoduleUtsHqwxdata",
+            "static": true,
+            "declAttributes": [
+              "Final",
+              "AccessControl",
+              "ObjC"
+            ],
+            "funcSelfKind": "NonMutating"
+          },
+          {
+            "kind": "Function",
+            "name": "s_handlePageByJs",
+            "printedName": "s_handlePageByJs(_:)",
+            "children": [
+              {
+                "kind": "TypeNominal",
+                "name": "Void",
+                "printedName": "()"
+              },
+              {
+                "kind": "TypeNominal",
+                "name": "String",
+                "printedName": "Swift.String",
+                "usr": "s:SS"
+              }
+            ],
+            "declKind": "Func",
+            "usr": "c:@M@unimoduleUtsHqwxdata@objc(cs)UTSSDKModulesUtsHqwxdataIndexSwift(cm)s_handlePageByJs:",
+            "mangledName": "$s20unimoduleUtsHqwxdata013UTSSDKModulesbC10IndexSwiftC16s_handlePageByJsyySSFZ",
+            "moduleName": "unimoduleUtsHqwxdata",
+            "static": true,
+            "declAttributes": [
+              "Final",
+              "AccessControl",
+              "ObjC"
+            ],
+            "funcSelfKind": "NonMutating"
+          },
+          {
+            "kind": "Constructor",
+            "name": "init",
+            "printedName": "init()",
+            "children": [
+              {
+                "kind": "TypeNominal",
+                "name": "UTSSDKModulesUtsHqwxdataIndexSwift",
+                "printedName": "unimoduleUtsHqwxdata.UTSSDKModulesUtsHqwxdataIndexSwift",
+                "usr": "c:@M@unimoduleUtsHqwxdata@objc(cs)UTSSDKModulesUtsHqwxdataIndexSwift"
+              }
+            ],
+            "declKind": "Constructor",
+            "usr": "c:@M@unimoduleUtsHqwxdata@objc(cs)UTSSDKModulesUtsHqwxdataIndexSwift(im)init",
+            "mangledName": "$s20unimoduleUtsHqwxdata013UTSSDKModulesbC10IndexSwiftCACycfc",
+            "moduleName": "unimoduleUtsHqwxdata",
+            "overriding": true,
+            "implicit": true,
+            "objc_name": "init",
+            "declAttributes": [
+              "Dynamic",
+              "ObjC",
+              "Override"
+            ],
+            "init_kind": "Designated"
+          }
+        ],
+        "declKind": "Class",
+        "usr": "c:@M@unimoduleUtsHqwxdata@objc(cs)UTSSDKModulesUtsHqwxdataIndexSwift",
+        "mangledName": "$s20unimoduleUtsHqwxdata013UTSSDKModulesbC10IndexSwiftC",
+        "moduleName": "unimoduleUtsHqwxdata",
+        "objc_name": "UTSSDKModulesUtsHqwxdataIndexSwift",
+        "declAttributes": [
+          "Final",
+          "AccessControl",
+          "ObjCMembers",
+          "ObjC"
+        ],
+        "superclassUsr": "c:objc(cs)NSObject",
+        "inheritsConvenienceInitializers": true,
+        "superclassNames": [
+          "ObjectiveC.NSObject"
+        ],
+        "conformances": [
+          {
+            "kind": "Conformance",
+            "name": "_KeyValueCodingAndObserving",
+            "printedName": "_KeyValueCodingAndObserving",
+            "usr": "s:10Foundation27_KeyValueCodingAndObservingP",
+            "mangledName": "$s10Foundation27_KeyValueCodingAndObservingP"
+          },
+          {
+            "kind": "Conformance",
+            "name": "_KeyValueCodingAndObservingPublishing",
+            "printedName": "_KeyValueCodingAndObservingPublishing",
+            "usr": "s:10Foundation37_KeyValueCodingAndObservingPublishingP",
+            "mangledName": "$s10Foundation37_KeyValueCodingAndObservingPublishingP"
+          },
+          {
+            "kind": "Conformance",
+            "name": "CVarArg",
+            "printedName": "CVarArg",
+            "usr": "s:s7CVarArgP",
+            "mangledName": "$ss7CVarArgP"
+          },
+          {
+            "kind": "Conformance",
+            "name": "Copyable",
+            "printedName": "Copyable",
+            "usr": "s:s8CopyableP",
+            "mangledName": "$ss8CopyableP"
+          },
+          {
+            "kind": "Conformance",
+            "name": "CustomDebugStringConvertible",
+            "printedName": "CustomDebugStringConvertible",
+            "usr": "s:s28CustomDebugStringConvertibleP",
+            "mangledName": "$ss28CustomDebugStringConvertibleP"
+          },
+          {
+            "kind": "Conformance",
+            "name": "CustomStringConvertible",
+            "printedName": "CustomStringConvertible",
+            "usr": "s:s23CustomStringConvertibleP",
+            "mangledName": "$ss23CustomStringConvertibleP"
+          },
+          {
+            "kind": "Conformance",
+            "name": "Equatable",
+            "printedName": "Equatable",
+            "usr": "s:SQ",
+            "mangledName": "$sSQ"
+          },
+          {
+            "kind": "Conformance",
+            "name": "Escapable",
+            "printedName": "Escapable",
+            "usr": "s:s9EscapableP",
+            "mangledName": "$ss9EscapableP"
+          },
+          {
+            "kind": "Conformance",
+            "name": "Hashable",
+            "printedName": "Hashable",
+            "usr": "s:SH",
+            "mangledName": "$sSH"
+          }
+        ]
+      }
+    ],
+    "json_format_version": 8
+  },
+  "ConstValues": [
+    {
+      "filePath": "\/Users\/sillker\/Documents\/git\/hq\/pad-unix\/native\/ios\/uts-hqwxdata-plugin\/Sources\/unimoduleUtsHqwxdata\/HQWXDataIOSBridge.swift",
+      "kind": "StringLiteral",
+      "offset": 149,
+      "length": 23,
+      "value": "\"HQUniAppXNativeBridge\""
+    }
+  ]
+}

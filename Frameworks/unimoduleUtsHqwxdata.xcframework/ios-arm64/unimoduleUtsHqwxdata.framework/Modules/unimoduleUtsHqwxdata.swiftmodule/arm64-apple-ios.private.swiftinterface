@@ -1,0 +1,31 @@
+// swift-interface-format-version: 1.0
+// swift-compiler-version: Apple Swift version 6.4.2 effective-5.10 (swiftlang-6.4.2.1.9 clang-2100.4.1.1)
+// swift-module-flags: -target arm64-apple-ios15.0 -enable-objc-interop -enable-library-evolution -language-mode 5 -O -enable-experimental-feature DebugDescriptionMacro -enable-bare-slash-regex -module-name unimoduleUtsHqwxdata
+// swift-module-flags-ignorable: -no-verify-emitted-module-interface -formal-cxx-interoperability-mode=off -interface-compiler-version 6.4.2
+import DCloudUTSFoundation
+import Foundation
+import Swift
+import _Concurrency
+import _StringProcessing
+import _SwiftConcurrencyShims
+@_inheritsConvenienceInitializers @objc(HQWXDataIOSBridge) @objcMembers final public class HQWXDataIOSBridge : ObjectiveC::NSObject {
+  @objc public static func getPublicParamsJSON() -> Swift::String
+  @objc public static func getLaunchParamsJSON() -> Swift::String
+  @objc public static func handleActionJSON(_ action: Swift::String, _ paramsJSON: Swift::String)
+  @objc public static func handlePageSwift(_ page: Swift::String)
+  @objc override dynamic public init()
+  @objc deinit
+}
+public typealias PublicParams = DCloudUTSFoundation::UTSJSONObject
+public func getPublicParamsByJs() -> unimoduleUtsHqwxdata::PublicParams
+public func getLaunchParamsByJs() -> unimoduleUtsHqwxdata::PublicParams
+public func handleActionByJs(_ action: Swift::String, _ params: DCloudUTSFoundation::UTSJSONObject)
+public func handlePageByJs(_ page: Swift::String)
+@_inheritsConvenienceInitializers @objc(UTSSDKModulesUtsHqwxdataIndexSwift) @objcMembers final public class UTSSDKModulesUtsHqwxdataIndexSwift : ObjectiveC::NSObject {
+  @objc public static func s_getPublicParamsByJs() -> unimoduleUtsHqwxdata::PublicParams
+  @objc public static func s_getLaunchParamsByJs() -> unimoduleUtsHqwxdata::PublicParams
+  @objc public static func s_handleActionByJs(_ action: Swift::String, _ params: DCloudUTSFoundation::UTSJSONObject)
+  @objc public static func s_handlePageByJs(_ page: Swift::String)
+  @objc override dynamic public init()
+  @objc deinit
+}

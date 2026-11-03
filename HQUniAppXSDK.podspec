@@ -1,6 +1,6 @@
 Pod::Spec.new do |s|
   s.name = 'HQUniAppXSDK'
-  s.version = '1.0.4'
+  s.version = '1.0.5'
   s.summary = 'HQ Pad HD UniAppX native bridge.'
   s.homepage = 'https://www.hqwx.com'
   s.license = {
@@ -14,7 +14,7 @@ Pod::Spec.new do |s|
     :git => 'https://github.com/sillker/HQUniAppXSDK.git',
     :tag => s.version.to_s
   }
-  s.platform = :ios, '13.0'
+  s.platform = :ios, '15.0'
 
   s.source_files = 'Sources/**/*.{h,m,mm,swift}'
   s.resources = [
