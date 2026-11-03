@@ -1,11 +1,19 @@
 Pod::Spec.new do |s|
   s.name = 'HQUniAppXSDK'
-  s.version = '1.0.3'
+  s.version = '1.0.4'
   s.summary = 'HQ Pad HD UniAppX native bridge.'
   s.homepage = 'https://www.hqwx.com'
-  s.license = { :type => 'Proprietary', :text => 'Copyright edu24ol.' }
-  s.author = { 'HQWX' => 'ios@hqwx.com' }
-  s.source = { :git => 'https://github.com/sillker/HQUniAppXSDK.git', :tag => s.version.to_s }
+  s.license = {
+    :type => 'Proprietary',
+    :text => 'Copyright edu24ol.'
+  }
+  s.author = {
+    'HQWX' => 'ios@hqwx.com'
+  }
+  s.source = {
+    :git => 'https://github.com/sillker/HQUniAppXSDK.git',
+    :tag => s.version.to_s
+  }
   s.platform = :ios, '13.0'
 
   s.source_files = 'Sources/**/*.{h,m,mm,swift}'
@@ -14,9 +22,13 @@ Pod::Spec.new do |s|
     'Resources/DCloud/**/*'
   ]
 
-  vendored_frameworks = (Dir['Frameworks/*.xcframework'] + Dir['Frameworks/*.framework']).reject do |framework|
+  vendored_frameworks = (
+    Dir['Frameworks/*.xcframework'] +
+    Dir['Frameworks/*.framework']
+  ).reject do |framework|
     File.basename(framework) == 'SDWebImage.xcframework'
   end
+
   s.vendored_frameworks = vendored_frameworks unless vendored_frameworks.empty?
 
   s.frameworks = [
@@ -39,16 +51,12 @@ Pod::Spec.new do |s|
     'SystemConfiguration',
     'UniformTypeIdentifiers'
   ]
+
   s.libraries = ['c++', 'z', 'sqlite3']
 
   s.pod_target_xcconfig = {
-    'OTHER_LDFLAGS' => '$(inherited) -ObjC -ld_classic -weak_framework SwiftUI',
+    'OTHER_LDFLAGS' => '$(inherited) -ObjC -weak_framework SwiftUI',
     'BUILD_LIBRARY_FOR_DISTRIBUTION' => 'NO',
-    'EXCLUDED_ARCHS[sdk=iphonesimulator*]' => 'arm64',
     'GCC_PREPROCESSOR_DEFINITIONS' => '$(inherited) HQ_PAD_HD=1'
-  }
-
-  s.user_target_xcconfig = {
-    'EXCLUDED_ARCHS[sdk=iphonesimulator*]' => 'arm64'
   }
 end
